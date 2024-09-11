@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  stock-app:
+    build: ./stock-app  # Build the stock-app from the local Dockerfile in ./stock-app
+    ports:
+      - "5001:5001"  # Expose Flask app on port 5001
+      - "8000:8000"  # Expose Prometheus metrics on port 8000
+    networks:
+      - app-network
+    restart: always  # Ensure container restarts on failure
+
+  prometheus:
+    build: ./prometheus  # Build Prometheus from its own Dockerfile
+    ports:
+      - "9090:9090"  # Expose Prometheus on port 9090
+    networks:
+      - app-network
+    restart: always  # Restart on failure
+
+  grafana:
+    build: ./grafana  # Build Grafana from its own Dockerfile
+    ports:
+      - "3000:3000"  # Expose Grafana on port 3000
+    networks:
+      - app-network
+    restart: always  # Restart on failure
+
+networks:
+  app-network:
+    driver: bridge  # Use a bridge network for internal communication

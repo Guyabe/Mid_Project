@@ -1,0 +1,94 @@
+2024-09-14 19:36:12,530 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://172.18.0.4:5001
+2024-09-14 19:36:12,530 - [33mPress CTRL+C to quit[0m
+2024-09-14 19:37:09,489 - Stock searched: NKE
+2024-09-14 19:37:10,815 - 192.168.65.1 - - [14/Sep/2024 19:37:10] "POST / HTTP/1.1" 200 -
+2024-09-14 19:37:10,830 - 192.168.65.1 - - [14/Sep/2024 19:37:10] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-14 19:38:41,105 - Stock searched: NKE
+2024-09-14 19:38:42,409 - 192.168.65.1 - - [14/Sep/2024 19:38:42] "POST / HTTP/1.1" 200 -
+2024-09-14 19:38:42,428 - 192.168.65.1 - - [14/Sep/2024 19:38:42] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-14 19:39:32,712 - 
+1 Failed download:
+2024-09-14 19:39:32,712 - ['BRK']: YFPricesMissingError('$%ticker%: possibly delisted; no price data found  (period=5d)')
+2024-09-14 19:39:32,713 - Stock searched: BRK
+2024-09-14 19:39:34,027 - 192.168.65.1 - - [14/Sep/2024 19:39:34] "POST / HTTP/1.1" 200 -
+2024-09-14 19:39:34,042 - 192.168.65.1 - - [14/Sep/2024 19:39:34] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-14 19:39:36,053 - Stock searched: intc
+2024-09-14 19:39:36,971 - 192.168.65.1 - - [14/Sep/2024 19:39:36] "POST / HTTP/1.1" 200 -
+2024-09-14 19:39:36,987 - 192.168.65.1 - - [14/Sep/2024 19:39:36] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-14 19:39:40,061 - Stock searched: U
+2024-09-14 19:39:40,958 - 192.168.65.1 - - [14/Sep/2024 19:39:40] "POST / HTTP/1.1" 200 -
+2024-09-14 19:39:40,973 - 192.168.65.1 - - [14/Sep/2024 19:39:40] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-14 19:50:54,322 - Stock searched: NKE
+2024-09-14 19:50:55,211 - 192.168.65.1 - - [14/Sep/2024 19:50:55] "POST / HTTP/1.1" 200 -
+2024-09-14 19:50:55,234 - 192.168.65.1 - - [14/Sep/2024 19:50:55] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-14 19:50:57,274 - Stock searched: U
+2024-09-14 19:50:58,194 - 192.168.65.1 - - [14/Sep/2024 19:50:58] "POST / HTTP/1.1" 200 -
+2024-09-14 19:50:58,214 - 192.168.65.1 - - [14/Sep/2024 19:50:58] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-14 19:51:00,234 - Stock searched: intc
+2024-09-14 19:51:01,129 - 192.168.65.1 - - [14/Sep/2024 19:51:01] "POST / HTTP/1.1" 200 -
+2024-09-14 19:51:01,145 - 192.168.65.1 - - [14/Sep/2024 19:51:01] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-14 19:51:03,874 - 
+1 Failed download:
+2024-09-14 19:51:03,875 - ['BRK']: YFPricesMissingError('$%ticker%: possibly delisted; no price data found  (period=5d)')
+2024-09-14 19:51:03,875 - Stock searched: BRK
+2024-09-14 19:51:05,144 - 192.168.65.1 - - [14/Sep/2024 19:51:05] "POST / HTTP/1.1" 200 -
+2024-09-14 19:51:05,162 - 192.168.65.1 - - [14/Sep/2024 19:51:05] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-14 19:55:08,292 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://172.18.0.2:5001
+2024-09-14 19:55:08,292 - [33mPress CTRL+C to quit[0m
+2024-09-14 20:10:16,285 - 
+1 Failed download:
+2024-09-14 20:10:16,285 - ['INTC']: ReadTimeout(ReadTimeoutError("HTTPSConnectionPool(host='query2.finance.yahoo.com', port=443): Read timed out. (read timeout=10)"))
+2024-09-14 20:15:59,164 - 
+1 Failed download:
+2024-09-14 20:15:59,166 - ['INTC']: ReadTimeout(ReadTimeoutError("HTTPSConnectionPool(host='query2.finance.yahoo.com', port=443): Read timed out. (read timeout=10)"))
+2024-09-14 20:26:48,863 - 
+1 Failed download:
+2024-09-14 20:26:48,863 - ['INTC']: ReadTimeout(ReadTimeoutError("HTTPSConnectionPool(host='query2.finance.yahoo.com', port=443): Read timed out. (read timeout=10)"))
+2024-09-14 20:32:34,139 - 
+1 Failed download:
+2024-09-14 20:32:34,139 - ['INTC']: ReadTimeout(ReadTimeoutError("HTTPSConnectionPool(host='query2.finance.yahoo.com', port=443): Read timed out. (read timeout=10)"))
+2024-09-14 20:37:08,815 - 
+1 Failed download:
+2024-09-14 20:37:08,816 - ['INTC']: ConnectionError(ProtocolError('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')))
+2024-09-14 20:43:01,838 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://172.18.0.5:5001
+2024-09-14 20:43:01,839 - [33mPress CTRL+C to quit[0m
+2024-09-14 20:43:30,237 - 
+1 Failed download:
+2024-09-14 20:43:30,238 - ['BRK']: YFPricesMissingError('$%ticker%: possibly delisted; no price data found  (period=5d)')
+2024-09-14 20:43:30,239 - Stock searched: BRK
+2024-09-14 20:43:31,625 - 192.168.65.1 - - [14/Sep/2024 20:43:31] "POST / HTTP/1.1" 200 -
+2024-09-14 20:43:31,645 - 192.168.65.1 - - [14/Sep/2024 20:43:31] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-14 20:43:35,529 - Error fetching data for NKE: 'NKE'
+2024-09-14 20:43:35,530 - Stock searched: NKE
+2024-09-14 20:43:35,694 - Error fetching data for GOOGL: 'GOOGL'
+2024-09-14 20:43:35,816 - Error fetching data for AAPL: 'AAPL'
+2024-09-14 20:43:35,816 - Error fetching data for MSFT: 'MSFT'
+2024-09-14 20:43:35,864 - Error fetching data for GOOGL: 'GOOGL'
+2024-09-14 20:43:35,865 - Error fetching data for TSLA: 'TSLA'
+2024-09-14 20:43:35,925 - Error fetching data for AMZN: 'AMZN'
+2024-09-14 20:43:35,925 - Error fetching data for META: 'META'
+2024-09-14 20:43:35,944 - Error fetching data for NFLX: 'NFLX'
+2024-09-14 20:43:36,027 - Error fetching data for MSFT: 'MSFT'
+2024-09-14 20:43:36,049 - Error fetching data for BABA: 'BABA'
+2024-09-14 20:43:36,050 - Error fetching data for TSLA: 'TSLA'
+2024-09-14 20:43:36,062 - Error fetching data for META: 'META'
+2024-09-14 20:43:36,106 - Error fetching data for NFLX: 'NFLX'
+2024-09-14 20:43:36,130 - Error fetching data for NVDA: 'NVDA'
+2024-09-14 20:43:36,155 - Error fetching data for BABA: 'BABA'
+2024-09-14 20:43:36,156 - 192.168.65.1 - - [14/Sep/2024 20:43:36] "POST / HTTP/1.1" 200 -
+2024-09-14 20:43:36,171 - 192.168.65.1 - - [14/Sep/2024 20:43:36] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-14 20:43:41,110 - Stock searched: intc
+2024-09-14 20:43:42,390 - 192.168.65.1 - - [14/Sep/2024 20:43:42] "POST / HTTP/1.1" 200 -
+2024-09-14 20:43:42,408 - 192.168.65.1 - - [14/Sep/2024 20:43:42] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-14 20:43:44,711 - Stock searched: NKE
+2024-09-14 20:43:45,599 - 192.168.65.1 - - [14/Sep/2024 20:43:45] "POST / HTTP/1.1" 200 -
+2024-09-14 20:43:45,615 - 192.168.65.1 - - [14/Sep/2024 20:43:45] "[36mGET /static/style.css HTTP/1.1[0m" 304 -

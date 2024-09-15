@@ -2,7 +2,6 @@
 docker-compose.override.yml
 Dockerfile
 
-# For stock-app
 __pycache__/
 *.pyc
 *.pyo

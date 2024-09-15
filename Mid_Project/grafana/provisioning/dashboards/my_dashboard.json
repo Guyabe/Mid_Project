@@ -15,12 +15,11 @@
       }
     ]
   },
-  "description": "Stock portfolio  Overview",
+  "description": "",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "gnetId": 15956,
   "graphTooltip": 0,
-  "id": 1,
   "links": [],
   "panels": [
     {
@@ -416,8 +415,8 @@
     ]
   },
   "timezone": "",
-  "title": "Stock portfolio",
+  "title": "Stock dashboard",
   "uid": "ferebtebh3",
-  "version": 7,
+  "version": 1,
   "weekStart": ""
 }

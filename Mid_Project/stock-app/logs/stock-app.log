@@ -238,3 +238,13 @@
 2024-09-15 08:06:10,727 - Stock searched: AAPL
 2024-09-15 08:06:11,600 - 192.168.65.1 - - [15/Sep/2024 08:06:11] "POST / HTTP/1.1" 200 -
 2024-09-15 08:06:11,617 - 192.168.65.1 - - [15/Sep/2024 08:06:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-15 08:56:35,269 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://172.18.0.5:5001
+2024-09-15 08:56:35,269 - [33mPress CTRL+C to quit[0m
+2024-09-15 08:58:52,691 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://172.18.0.3:5001
+2024-09-15 08:58:52,691 - [33mPress CTRL+C to quit[0m

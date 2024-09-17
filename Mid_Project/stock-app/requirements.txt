@@ -1,4 +1,0 @@
-Flask
-yfinance
-scikit-learn
-prometheus_client

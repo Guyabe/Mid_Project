@@ -1,30 +1,18 @@
 version: '3'
 services:
-  stock-app:
-    build: ./stock-app
-    ports:
-      - "5001:5001"
-      - "8000:8000"
-    networks:
-      - app-network
-    volumes:
-      # Use relative path for Linux environments
-      # - ./stock-app/logs:/app/logs
-
-      # Use absolute path for macOS to avoid Docker mount issues
-      - /Users/guyabecassis/Desktop/Guy/Projects/Mid_Project/Mid_Project/stock-app/logs:/app/logs
-    restart: always
-
   prometheus:
-    build: ./prometheus
+    image: gabecasis/prometheus:2
     ports:
       - "9090:9090"
     networks:
       - app-network
     restart: always
+    volumes:
+      - ./prometheus:/prometheus  # Persistent storage for Prometheus data
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml  # Custom Prometheus config
 
   grafana:
-    build: ./grafana
+    image: gabecasis/grafana:2
     ports:
       - "3000:3000"
     networks:
@@ -38,7 +26,7 @@ services:
       - loki
 
   loki:
-    build: ./loki
+    image: gabecasis/loki:2
     container_name: loki
     ports:
       - "3100:3100"
@@ -46,17 +34,16 @@ services:
       - app-network
     restart: always
     volumes:
-      - ./loki/config:/etc/loki/config
       - ./loki/data:/loki
 
   promtail:
-    build: ./promtail
+    image: gabecasis/promtail:2
     container_name: promtail
     ports:
       - "9080:9080"
     volumes:
       - ./promtail/config/config.yml:/etc/promtail/config.yml
-      - ./stock-app/logs:/var/log/stock-app
+      - ./loki/data:/var/log/loki
     networks:
       - app-network
 

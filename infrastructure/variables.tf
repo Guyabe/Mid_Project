@@ -58,3 +58,17 @@ variable "name" {
     type        = map(string)
   }
 
+  ####################
+  ##### KEYPAIRS #####
+  ####################
+
+  variable "key_name" {
+    description = "Input desired keypair name"
+    type        = string
+    default = "trading-key"
+  }
+  variable "create_private_key" {
+    description = "Create a private key"
+    type        = bool
+    default = true
+  }

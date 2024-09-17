@@ -34,3 +34,8 @@ grafana*.log
 # Build artifacts
 build/
 dist/
+
+# Terraform files
+*/.terraform*
+*/terraform.tfstate
+*/terraform.tfstate.backup

@@ -23,14 +23,14 @@ module "sg" {
           to_port     = 80
           protocol    = "tcp"
           description = "Allow HTTP"
-          cidr_blocks = ["0.0.0.0/0"]
+          cidr_blocks = "0.0.0.0/0"
         },
         {
           from_port   = 443
           to_port     = 443
           protocol    = "tcp"
           description = "Allow HTTPS"
-          cidr_blocks = ["0.0.0.0/0"]
+          cidr_blocks = "0.0.0.0/0"
         },
       ]
 
@@ -40,7 +40,7 @@ module "sg" {
           to_port     = 0
           protocol    = "-1"
           description = "Allow all outbound traffic"
-          cidr_blocks = ["10.0.0.0/16"]
+          cidr_blocks = "10.0.0.0/16"
         },
       ]
     }

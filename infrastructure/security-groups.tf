@@ -23,49 +23,49 @@ module "alb_sg" {
       to_port     = 80
       protocol    = "tcp"
       description = "Allow HTTP"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     },
     {
       from_port   = 443
       to_port     = 443
       protocol    = "tcp"
       description = "Allow HTTPS"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     },
     {
       from_port   = 8000
       to_port     = 8000
       protocol    = "tcp"
       description = "Allow Application Port"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     },
     {
       from_port   = 5001
       to_port     = 5001
       protocol    = "tcp"
       description = "Allow Flask Port"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     },
     {
       from_port   = 3000
       to_port     = 3000
       protocol    = "tcp"
       description = "Allow Grafana Port"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     },
     {
       from_port   = 9090
       to_port     = 9090
       protocol    = "tcp"
       description = "Allow Prometheus Port"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     },
     {
       from_port   = 3100
       to_port     = 3100
       protocol    = "tcp"
       description = "Allow Loki Port"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     },
   ]
 
@@ -75,7 +75,7 @@ module "alb_sg" {
       to_port     = 0
       protocol    = "-1"
       description = "Allow all outbound traffic"
-      cidr_blocks = ["10.0.0.0/16"]
+      cidr_blocks = "10.0.0.0/16"
     },
   ]
 }

@@ -7,6 +7,7 @@ import logging
 import os
 import threading
 import time
+from pymongo import MongoClient
 
 # Flask app setup
 app = Flask(__name__)
@@ -24,6 +25,12 @@ logging.basicConfig(
     format='%(asctime)s - %(message)s',
     filemode='a'  # Append mode, ensures new logs are added to existing log file
 )
+
+# MongoDB client setup
+mongo_uri = os.getenv("MONGO_URI", "mongodb://root:password@44.198.185.66:27017")
+client = MongoClient(mongo_uri)
+db = client.stock_app_db  # Use or create a database
+stocks_collection = db.stocks  # Use or create a collection
 
 # Prometheus metrics
 current_stock_value = Gauge('current_stock_value', 'Current value of a stock', ['stock'])
@@ -44,6 +51,12 @@ def index():
 
         # Log the searched stock
         logging.info(f'Stock searched: {stock_ticker}')
+
+        # Save the stock data to MongoDB
+        stocks_collection.insert_one({
+            "stock": stock_ticker,
+            "data": predicted_value
+        })
 
     # List of stocks to pull
     stock_list = ['INTC', 'AAPL', 'GOOGL', 'AMZN', 'MSFT', 'TSLA', 'META', 'NFLX', 'NVDA', 'BABA']

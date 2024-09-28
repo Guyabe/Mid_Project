@@ -1,0 +1,39 @@
+version: '3'
+services:
+  promtail:
+    image: gabecasis/promtail:2
+    container_name: promtail
+    ports:
+      - "9080:9080"
+    volumes:
+      - ./promtail/config/config.yml:/etc/promtail/config.yml
+      - /home/ec2-user/stock-app/logs:/home/ec2-user/stock-app/logs  # Correctly map stock-app logs for Promtail
+    networks:
+      - app-network
+
+
+  stock-app:
+    image: gabecasis/stock-app:4
+    ports:
+      - "5001:5001"
+      - "8000:8000"
+    environment:
+      MONGO_URI: ${MONGO_URI}
+    volumes:
+      - /home/ec2-user/stock-app/logs:/app/logs  # Maps the container’s logs directory to a host directory
+    command: ["--mongo_uri", "${MONGO_URI}"]
+    networks:
+      - app-network
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge

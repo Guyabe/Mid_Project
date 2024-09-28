@@ -27,7 +27,7 @@ logging.basicConfig(
 )
 
 # MongoDB client setup
-mongo_uri = os.getenv("MONGO_URI", "mongodb://root:password@44.198.185.66:27017")
+mongo_uri = os.getenv("MONGO_URI", "mongodb://root:password@3.234.223.63:27017")
 client = MongoClient(mongo_uri)
 db = client.stock_app_db  # Use or create a database
 stocks_collection = db.stocks  # Use or create a collection

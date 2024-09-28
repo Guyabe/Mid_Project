@@ -2,27 +2,100 @@
 # Update system packages
 yum update -y
 
-# Switch to superuser
-sudo su
-
 # Install Docker
-sudo yum update -y
 sudo yum install -y docker
 sudo systemctl start docker
-sudo systemctl enable docker  # Ensure Docker starts on reboot
+sudo systemctl enable docker
+
+# Install Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+chmod +x /usr/local/bin/docker-compose
 
 # Create a directory for the project
 mkdir -p /home/ec2-user/stock-app
-cd /home/ec2-user/stock-app
+mkdir -p /home/ec2-user/promtail /home/ec2-user/promtail/config
+mkdir -p /home/ec2-user/loki/data /home/ec2-user/loki/config
 
-# Pull the stock-app Docker image from Docker Hub
-docker pull gabecasis/stock-app:3
+# Create the Promtail configuration file
+cat <<EOF > /home/ec2-user/promtail/config/config.yml
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /var/log/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: system
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: varlogs
+          __path__: /var/log/*log
+
+  # New job to scrape logs locally from stock-app
+  - job_name: stock-app-logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: stock-app-logs
+          __path__: /home/ec2-user/stock-app/logs/*.log
+EOF
+
+cat <<EOF > /home/ec2-user/docker-compose.yml
+version: '3'
+services:
+  promtail:
+    image: gabecasis/promtail:2
+    container_name: promtail
+    ports:
+      - "9080:9080"
+    volumes:
+      - ./promtail/config/config.yml:/etc/promtail/config.yml
+      - /home/ec2-user/stock-app/logs:/home/ec2-user/stock-app/logs  # Correctly map stock-app logs for Promtail
+    networks:
+      - app-network
+
+
+  stock-app:
+    image: gabecasis/stock-app:4
+    ports:
+      - "5001:5001"
+      - "8000:8000"
+    environment:
+      MONGO_URI: ${MONGO_URI}
+    volumes:
+      - /home/ec2-user/stock-app/logs:/app/logs  # Maps the container’s logs directory to a host directory
+    command: ["--mongo_uri", "${MONGO_URI}"]
+    networks:
+      - app-network
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge
+
+EOF
 
 # Set MongoDB URI variable (modify this with the correct MongoDB EC2 IP and credentials)
-MONGO_URI="mongodb://root:password@<EC2 MONGO IP ADDRESS!!!!!!!>:27017/"
+MONGO_URI="mongodb://root:password@3.234.223.63:27017/"
 
-# Run the stock-app container, passing the MongoDB URI as an argument
-docker run -d \
-  -p 5001:5001 -p 8000:8000 \
-  gabecasis/stock-app:3 \
-  --mongo_uri "$MONGO_URI"
+# Pull the latest Docker image
+sudo docker-compose pull
+
+# Run docker-compose with MONGO_URI passed as an environment variable
+sudo MONGO_URI="mongodb://root:password@3.234.223.63:27017" docker-compose up -d

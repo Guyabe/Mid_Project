@@ -1,4 +1,6 @@
 Flask
 yfinance
+numpy
 scikit-learn
 prometheus_client
+pymongo

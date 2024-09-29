@@ -5,4 +5,4 @@ scrape_configs:
   - job_name: 'flask_stock_app'
     metrics_path: /metrics
     static_configs:
-      - targets: ['stock-app:8000']
+      - targets: ['3.94.148.26:8000']

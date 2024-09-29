@@ -9,7 +9,6 @@ sudo systemctl enable docker
 
 # Install Docker Compose
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-
 chmod +x /usr/local/bin/docker-compose
 
 # Create necessary directories for volumes
@@ -19,8 +18,8 @@ mkdir -p /home/ec2-user/grafana /home/ec2-user/grafana/provisioning /home/ec2-us
 # Change ownership of directories to ec2-user
 chown -R ec2-user:ec2-user /home/ec2-user/*
 chown -R 65534:65534 /home/ec2-user/prometheus  # Ensure Prometheus has permission to write to the directory
-sudo chown -R 472:472 ./grafana
-sudo chmod -R 755 ./grafana
+sudo chown -R 472:472 /home/ec2-user/grafana
+sudo chmod -R 755 /home/ec2-user/grafana
 
 # Create the Prometheus configuration file
 cat <<EOF > /home/ec2-user/prometheus/prometheus.yml
@@ -31,10 +30,10 @@ scrape_configs:
   - job_name: 'flask_stock_app'
     metrics_path: /metrics
     static_configs:
-      - targets: ['3.94.148.26:8000']
+      - targets: ['44.200.157.188:8000']
 EOF
 
-# Set Grafana datasource configuration file to pull from prometheus and loki
+# Set Grafana datasource configuration file to pull from Prometheus and Loki
 cat <<EOF > /home/ec2-user/grafana/provisioning/datasources/datasources.yml
 apiVersion: 1
 
@@ -52,44 +51,56 @@ datasources:
     type: loki
     access: proxy
     orgId: 1
-    url: http://3.94.148.26:3100
+    url: http://44.200.157.188:3100
     isDefault: false
     version: 1
     editable: true
 EOF
 
+# Provision Grafana dashboards
+cat <<EOF > /home/ec2-user/grafana/provisioning/dashboards/dashboard.yml
+apiVersion: 1
+
+providers:
+  - name: 'default'
+    orgId: 1
+    folder: ''
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    options:
+      path: /etc/grafana/provisioning/dashboards
+EOF
 
 # Create the Grafana Loki dashboard file
 cat <<EOF > /home/ec2-user/grafana/provisioning/dashboards/loki_dashboard.json
 {
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "links": [],
   "panels": [
     {
-      "datasource": "Loki",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
+      "datasource": {
+        "default": false,
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
       },
       "gridPos": {
         "h": 9,
@@ -99,22 +110,32 @@ cat <<EOF > /home/ec2-user/grafana/provisioning/dashboards/loki_dashboard.json
       },
       "id": 1,
       "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
         "showLabels": false,
         "showTime": true,
-        "sortOrder": "Descending"
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
       },
       "targets": [
         {
-          "expr": "{job=\"flask_stock_app\"}",
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{job=\"stock-app-logs\"}\n",
+          "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Loki Log Stream",
+      "title": "Stock App Log Stream",
       "type": "logs"
     }
   ],
-  "schemaVersion": 30,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": []
@@ -125,15 +146,14 @@ cat <<EOF > /home/ec2-user/grafana/provisioning/dashboards/loki_dashboard.json
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Loki Logs",
-  "uid": "loki-logs",
-  "version": 1
+  "title": "Stock App Logs",
+  "uid": "stock-app-logs",
+  "version": 1,
+  "weekStart": ""
 }
 EOF
 
-
-
-# Create the Grafana dashboard for stock file
+# Create the Grafana stock-app dashboard file
 cat <<EOF > /home/ec2-user/grafana/provisioning/dashboards/stock-app_dashboard.json
 {
   "annotations": {
@@ -591,7 +611,6 @@ services:
 networks:
   app-network:
     driver: bridge
-
 EOF
 
 # Navigate to the directory and bring up the services

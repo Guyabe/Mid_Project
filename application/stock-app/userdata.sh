@@ -92,10 +92,10 @@ networks:
 EOF
 
 # Set MongoDB URI variable (modify this with the correct MongoDB EC2 IP and credentials)
-MONGO_URI="mongodb://root:password@3.234.223.63:27017/"
+MONGO_URI="mongodb://root:password@44.199.244.9:27017/"
 
 # Pull the latest Docker image
 sudo docker-compose pull
 
 # Run docker-compose with MONGO_URI passed as an environment variable
-sudo MONGO_URI="mongodb://root:password@3.234.223.63:27017" docker-compose up -d
+sudo MONGO_URI="mongodb://root:password@44.199.244.9:27017" docker-compose up -d

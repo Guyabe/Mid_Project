@@ -48,6 +48,7 @@ scrape_configs:
           __path__: /home/ec2-user/stock-app/logs/*.log
 EOF
 
+# Create the Docker Compose file
 cat <<EOF > /home/ec2-user/docker-compose.yml
 version: '3'
 services:
@@ -62,9 +63,8 @@ services:
     networks:
       - app-network
 
-
   stock-app:
-    image: gabecasis/stock-app:4
+    image: gabecasis/stock-app:5
     ports:
       - "5001:5001"
       - "8000:8000"
@@ -88,14 +88,13 @@ services:
 networks:
   app-network:
     driver: bridge
-
 EOF
 
-# Set MongoDB URI variable (modify this with the correct MongoDB EC2 IP and credentials)
-MONGO_URI="mongodb://root:password@44.199.244.9:27017/"
+# Set MongoDB URI variable (using the MongoDB EC2 IP 3.237.173.0 and appropriate credentials)
+MONGO_URI="mongodb://root:password@3.237.173.0:27017/"
 
-# Pull the latest Docker image
+# Pull the latest Docker images
 sudo docker-compose pull
 
 # Run docker-compose with MONGO_URI passed as an environment variable
-sudo MONGO_URI="mongodb://root:password@44.199.244.9:27017" docker-compose up -d
+sudo MONGO_URI=$MONGO_URI docker-compose up -d

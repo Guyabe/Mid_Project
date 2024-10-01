@@ -8,6 +8,7 @@ import os
 import threading
 import time
 from pymongo import MongoClient
+import sys
 
 # Flask app setup
 app = Flask(__name__)
@@ -27,7 +28,8 @@ logging.basicConfig(
 )
 
 # MongoDB client setup
-mongo_uri = os.getenv("MONGO_URI", "mongodb://root:password@44.199.244.9:27017")
+# The MongoDB URI is fetched dynamically from the environment variable
+mongo_uri = os.getenv("MONGO_URI", "mongodb://root:password@localhost:27017/")
 client = MongoClient(mongo_uri)
 db = client.stock_app_db  # Use or create a database
 stocks_collection = db.stocks  # Use or create a collection
@@ -36,6 +38,7 @@ stocks_collection = db.stocks  # Use or create a collection
 current_stock_value = Gauge('current_stock_value', 'Current value of a stock', ['stock'])
 predicted_stock_value = Gauge('predicted_stock_value', 'Predicted value of a stock', ['stock'])
 request_counter = Counter('webapp_request_count', 'Total number of requests to the web app')
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -65,14 +68,16 @@ def index():
     return render_template('index.html', predicted_value=predicted_value, stock_ticker=stock_ticker,
                            stock_predictions=stock_predictions)
 
+
 @app.route('/metrics')
 def metrics():
     from prometheus_client import generate_latest
     return generate_latest()
 
+
 def get_stock_data(ticker):
     try:
-        stock_data = yf.download(ticker, period='5d', interval='1d')
+        stock_data = yf.download(ticker, period='5d', interval='1d', progress=False)
         if len(stock_data) < 2:
             return {"yesterday": "N/A", "today": "N/A",
                     "predicted_tomorrow": {"value": "N/A", "sign": "", "color": "black"}}
@@ -112,6 +117,49 @@ def get_stock_data(ticker):
             }
         }
 
+
+def get_stock_prediction(ticker):
+    """
+    A helper function to return only the predicted stock price.
+    """
+    try:
+        stock_data = yf.download(ticker, period='5d', interval='1d', progress=False)
+        if len(stock_data) < 2:
+            return None
+
+        prices = stock_data['Close'].values[-2:]
+        X = np.array([1, 2]).reshape(-1, 1)
+        y = prices
+        model = LinearRegression()
+        model.fit(X, y)
+        predicted_price = model.predict(np.array([[3]]))[0]
+
+        return round(predicted_price, 2)
+    except Exception as e:
+        logging.error(f"Error predicting stock for {ticker}: {e}")
+        return None
+
+
+def get_recommendation():
+    """
+    Calculates and returns the stock with the highest predicted price.
+    """
+    stock_list = ['INTC', 'AAPL', 'GOOGL', 'AMZN', 'MSFT', 'TSLA', 'META', 'NFLX', 'NVDA', 'BABA']
+    best_stock = None
+    highest_predicted_price = -float('inf')
+
+    for ticker in stock_list:
+        predicted_price = get_stock_prediction(ticker)
+        if predicted_price is not None and predicted_price > highest_predicted_price:
+            highest_predicted_price = predicted_price
+            best_stock = ticker
+
+    if best_stock:
+        return f"The best stock to buy is {best_stock} with a predicted price of ${highest_predicted_price}"
+    else:
+        return "No valid stock data available for recommendation."
+
+
 def update_metrics_periodically():
     stock_list = ['INTC', 'AAPL', 'GOOGL', 'AMZN', 'MSFT', 'TSLA', 'META', 'NFLX', 'NVDA', 'BABA']
     while True:
@@ -119,14 +167,19 @@ def update_metrics_periodically():
             get_stock_data(ticker)
         time.sleep(30)
 
+
 if __name__ == '__main__':
-    # Start Prometheus metrics server
-    start_http_server(8000)
+    if len(sys.argv) > 1 and sys.argv[1] == "-provide_recommendation":
+        # Print out the stock recommendation based on predicted prices
+        print(get_recommendation())
+    else:
+        # Start Prometheus metrics server
+        start_http_server(8000)
 
-    # Start background thread to update metrics every 30 seconds
-    metrics_thread = threading.Thread(target=update_metrics_periodically)
-    metrics_thread.daemon = True  # Daemon thread will shut down when the main program exits
-    metrics_thread.start()
+        # Start background thread to update metrics every 30 seconds
+        metrics_thread = threading.Thread(target=update_metrics_periodically)
+        metrics_thread.daemon = True  # Daemon thread will shut down when the main program exits
+        metrics_thread.start()
 
-    # Start Flask web server
-    app.run(host='0.0.0.0', port=5001)
+        # Start Flask web server
+        app.run(host='0.0.0.0', port=5001)

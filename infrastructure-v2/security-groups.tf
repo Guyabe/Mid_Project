@@ -108,7 +108,7 @@ resource "aws_security_group" "ec2_mongo_sg" {
     from_port   = 8081
     to_port     = 8081
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    security_groups = [aws_security_group.alb_sg.id]
   }
 
   ingress {
@@ -116,6 +116,13 @@ resource "aws_security_group" "ec2_mongo_sg" {
     to_port     = 27017
     protocol    = "tcp"
     cidr_blocks = ["10.0.0.0/16"]
+  }
+
+  ingress {
+    from_port   = 27017
+    to_port     = 27017
+    protocol    = "tcp"
+    security_groups = [aws_security_group.ec2_app_sg.id]
   }
 
   egress {

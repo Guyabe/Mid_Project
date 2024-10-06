@@ -10,7 +10,7 @@ resource "aws_autoscaling_group" "ec2_app_asg" {
   max_size                    = 2
   desired_capacity            = 2
   
-  target_group_arns           = [aws_lb_target_group.app_ui_target_group.arn]
+  target_group_arns           = [aws_lb_target_group.app_ui_target_group.arn, aws_lb_target_group.stock_metrics_target_group.arn, aws_lb_target_group.promtail_target_group.arn, aws_lb_target_group.loki_target_group.arn]
 
   tag {
     key                 = "Name"
@@ -31,7 +31,7 @@ resource "aws_autoscaling_group" "ec2_asg" {
   max_size                    = 1
   desired_capacity            = 1
   
-  target_group_arns           = [aws_lb_target_group.stock_metrics_target_group.arn]
+  target_group_arns           = [aws_lb_target_group.grafana_target_group.arn, aws_lb_target_group.prometheus_target_group.arn]
 
   tag {
     key                 = "Name"

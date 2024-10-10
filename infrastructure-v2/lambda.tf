@@ -61,7 +61,7 @@ resource "aws_lambda_function" "ssm_command_lambda" {
 
   environment {
     variables = {
-      EC2_INSTANCE_ID = var.ec2_instance_id
+      EC2_INSTANCE_ID = "i-000000000"
     }
   }
 

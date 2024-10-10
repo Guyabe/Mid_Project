@@ -49,3 +49,32 @@ resource "aws_iam_role_policy_attachment" "lambda_ssm_policy_attachment" {
   role       = aws_iam_role.lambda_ssm_role.name
   policy_arn = aws_iam_policy.lambda_ssm_policy.arn
 }
+
+# lambda.tf
+
+resource "aws_lambda_function" "ssm_command_lambda" {
+  function_name = "ssm_command_lambda"
+  role          = aws_iam_role.lambda_ssm_role.arn
+  handler       = "lambda_function.lambda_handler"
+  runtime       = "python3.8"
+  filename      = "lambda.zip"  # Ensure that you package and upload your Lambda code
+
+  environment {
+    variables = {
+      EC2_INSTANCE_ID = var.ec2_instance_id
+    }
+  }
+
+  # Timeout and memory limits can be set here as needed
+  timeout = 60
+  memory_size = 128
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.ssm_command_lambda.function_name
+  principal     = "cloudwatch.amazonaws.com"
+}
+
+

@@ -8,9 +8,10 @@ resource "aws_lb" "alb" {
   tags = merge(local.tags, { Name = "${local.tags.Environment}-alb" })
 }
 
-resource "aws_lb_listener" "http" {
+# Listener for Application UI on port 5001
+resource "aws_lb_listener" "app_ui_listener" {
   load_balancer_arn = aws_lb.alb.arn
-  port              = 80
+  port              = 5001
   protocol          = "HTTP"
 
   default_action {
@@ -19,122 +20,74 @@ resource "aws_lb_listener" "http" {
   }
 }
 
+# Listener for Stock Metrics on port 8000
+resource "aws_lb_listener" "stock_metrics_listener" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 8000
+  protocol          = "HTTP"
 
-# Rule for Application UI on /ui
-resource "aws_lb_listener_rule" "app_ui_rule" {
-  listener_arn = aws_lb_listener.http.arn
-  priority     = 100
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.app_ui_target_group.arn
-  }
-
-  condition {
-    path_pattern {
-      values = ["/ui/*"]
-    }
-  }
-}
-
-# Rule for Stock Metrics on /metrics
-resource "aws_lb_listener_rule" "stock_metrics_rule" {
-  listener_arn = aws_lb_listener.http.arn
-  priority     = 110
-
-  action {
+  default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.stock_metrics_target_group.arn
   }
-
-  condition {
-    path_pattern {
-      values = ["/metrics/*"]
-    }
-  }
 }
 
-# Rule for Mongo Express on /mongo-express
-resource "aws_lb_listener_rule" "mongo_express_rule" {
-  listener_arn = aws_lb_listener.http.arn
-  priority     = 120
+# Listener for Mongo Express on port 8081
+resource "aws_lb_listener" "mongo_express_listener" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 8081
+  protocol          = "HTTP"
 
-  action {
+  default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.mongo_express_target_group.arn
   }
-
-  condition {
-    path_pattern {
-      values = ["/mongo-express/*"]
-    }
-  }
 }
 
-# Rule for Promtail on /promtail
-resource "aws_lb_listener_rule" "promtail_rule" {
-  listener_arn = aws_lb_listener.http.arn
-  priority     = 130
+# Listener for Promtail on port 9080
+resource "aws_lb_listener" "promtail_listener" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 9080
+  protocol          = "HTTP"
 
-  action {
+  default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.promtail_target_group.arn
   }
-
-  condition {
-    path_pattern {
-      values = ["/promtail/*"]
-    }
-  }
 }
 
-# Rule for Loki on /loki
-resource "aws_lb_listener_rule" "loki_rule" {
-  listener_arn = aws_lb_listener.http.arn
-  priority     = 140
+# Listener for Loki on port 3100
+resource "aws_lb_listener" "loki_listener" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 3100
+  protocol          = "HTTP"
 
-  action {
+  default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.loki_target_group.arn
   }
-
-  condition {
-    path_pattern {
-      values = ["/loki/*"]
-    }
-  }
 }
 
-# Rule for Prometheus on /prometheus
-resource "aws_lb_listener_rule" "prometheus_rule" {
-  listener_arn = aws_lb_listener.http.arn
-  priority     = 150
+# Listener for Prometheus on port 9090
+resource "aws_lb_listener" "prometheus_listener" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 9090
+  protocol          = "HTTP"
 
-  action {
+  default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.prometheus_target_group.arn
   }
-
-  condition {
-    path_pattern {
-      values = ["/prometheus/*"]
-    }
-  }
 }
 
-# Rule for Grafana on /grafana
-resource "aws_lb_listener_rule" "grafana_rule" {
-  listener_arn = aws_lb_listener.http.arn
-  priority     = 160
+# Listener for Grafana on port 3000
+resource "aws_lb_listener" "grafana_listener" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 3000
+  protocol          = "HTTP"
 
-  action {
+  default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.grafana_target_group.arn
-  }
-
-  condition {
-    path_pattern {
-      values = ["/grafana/*"]
-    }
   }
 }

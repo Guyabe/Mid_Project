@@ -14,7 +14,7 @@ resource "aws_security_group" "ec2_app_sg" {
     from_port   = 8000
     to_port     = 8000
     protocol    = "tcp"
-    security_groups = [aws_security_group.alb_sg.id]
+    cidr_blocks = ["10.0.0.0/16"]
   }
 
   ingress {
@@ -29,7 +29,7 @@ resource "aws_security_group" "ec2_app_sg" {
     from_port   = 3100
     to_port     = 3100
     protocol    = "tcp"
-    security_groups = [aws_security_group.alb_sg.id]
+    cidr_blocks = ["10.0.0.0/16"]
   }
 
   egress {
@@ -77,6 +77,55 @@ resource "aws_security_group" "alb_sg" {
   ingress {
     from_port   = 443
     to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Ideally this should be restricted to the Cloudfront
+  }
+
+  ingress {
+    from_port   = 5001
+    to_port     = 5001
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Ideally this should be restricted to the Cloudfront
+  }
+
+  ingress {
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Ideally this should be restricted to the Cloudfront
+  }
+
+  ingress {
+    from_port   = 8081
+    to_port     = 8081
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Ideally this should be restricted to the Cloudfront
+  }
+
+  ingress {
+    from_port   = 9080
+    to_port     = 9080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Ideally this should be restricted to the Cloudfront
+  }
+
+  ingress {
+    from_port   = 3100
+    to_port     = 3100
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Ideally this should be restricted to the Cloudfront
+  }
+
+  ingress {
+    from_port   = 9090
+    to_port     = 9090
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Ideally this should be restricted to the Cloudfront
+  }
+
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"] # Ideally this should be restricted to the Cloudfront
   }

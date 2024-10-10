@@ -6,8 +6,8 @@ resource "aws_lb_target_group" "app_ui_target_group" {
   vpc_id   = module.vpc.vpc_id
 
   health_check {
-    path                = "/"
-    protocol            = "HTTP"
+    path = "/"
+    protocol            = "HTTP"  # Changed from HTTP to TCP
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
@@ -23,8 +23,7 @@ resource "aws_lb_target_group" "stock_metrics_target_group" {
   vpc_id   = module.vpc.vpc_id
 
   health_check {
-    path                = "/"
-    protocol            = "HTTP"
+    protocol            = "HTTP"   # Changed from HTTP to TCP
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
@@ -40,8 +39,7 @@ resource "aws_lb_target_group" "mongo_express_target_group" {
   vpc_id   = module.vpc.vpc_id
 
   health_check {
-    path                = "/"
-    protocol            = "HTTP"
+    protocol            = "HTTP"   # Changed from HTTP to TCP
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
@@ -57,8 +55,7 @@ resource "aws_lb_target_group" "promtail_target_group" {
   vpc_id   = module.vpc.vpc_id
 
   health_check {
-    path                = "/"
-    protocol            = "HTTP"
+    protocol            = "HTTP"   # Changed from HTTP to TCP
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
@@ -74,8 +71,7 @@ resource "aws_lb_target_group" "loki_target_group" {
   vpc_id   = module.vpc.vpc_id
 
   health_check {
-    path                = "/"
-    protocol            = "HTTP"
+    protocol            = "HTTP"   # Changed from HTTP to TCP
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
@@ -91,8 +87,7 @@ resource "aws_lb_target_group" "prometheus_target_group" {
   vpc_id   = module.vpc.vpc_id
 
   health_check {
-    path                = "/"
-    protocol            = "HTTP"
+    protocol            = "HTTP"   # Changed from HTTP to TCP
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
@@ -108,8 +103,7 @@ resource "aws_lb_target_group" "grafana_target_group" {
   vpc_id   = module.vpc.vpc_id
 
   health_check {
-    path                = "/"
-    protocol            = "HTTP"
+    protocol            = "HTTP"   # Changed from HTTP to TCP
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2

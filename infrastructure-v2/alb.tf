@@ -8,6 +8,18 @@ resource "aws_lb" "alb" {
   tags = merge(local.tags, { Name = "${local.tags.Environment}-alb" })
 }
 
+resource "aws_lb_listener" "http_to_5001" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app_ui_target_group.arn
+  }
+  
+}
+
 # Listener for Application UI on port 5001
 resource "aws_lb_listener" "app_ui_listener" {
   load_balancer_arn = aws_lb.alb.arn

@@ -32,7 +32,8 @@ resource "aws_iam_policy" "lambda_ssm_policy" {
         ],
         Resource = [
           "arn:aws:ssm:*:*:document/AWS-RunShellScript",
-          "arn:aws:ec2:*:*"
+          "arn:aws:ec2:*:*",
+          "*"
         ]
       },
       {
@@ -57,16 +58,16 @@ resource "aws_lambda_function" "ssm_command_lambda" {
   role          = aws_iam_role.lambda_ssm_role.arn
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.8"
-  filename      = "${path.module}../application/lambda.zip"
+  filename      = "${path.module}/../application/lambda.zip"
 
   environment {
     variables = {
-      EC2_INSTANCE_ID = "i-000000000"
+      EC2_INSTANCE_ID = "i-064b4c13d50f9a0c6"
     }
   }
 
   # Timeout and memory limits can be set here as needed
-  timeout = 60
+  timeout = 15
   memory_size = 128
 }
 

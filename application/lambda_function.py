@@ -1,13 +1,12 @@
 import boto3
 import time
 
-# Set up boto3 client for SSM
 ssm_client = boto3.client('ssm')
 
 def lambda_handler(event, context):
-    # Step 1: Define the EC2 instance ID and the Docker command to run
-    instance_id = "<YOUR-EC2-INSTANCE-ID>"  # Replace with your actual EC2 instance ID
-    container_id = "bd4044b7a52d"  # Replace with your running container ID
+    # Retrieve environment variables if instance_id or container_id is dynamic
+    instance_id = "i-064b4c13d50f9a0c6"  # Replace or retrieve from event/env if dynamic
+    container_id = "5fed5cab9bbb"  # Replace or retrieve from event/env if dynamic
     command = f"docker exec {container_id} python3 /home/ec2-user/app.py -provide_recommendation"
 
     # Step 2: Send the command to the EC2 instance via SSM
@@ -27,20 +26,23 @@ def lambda_handler(event, context):
         }
 
     # Step 3: Wait for the command to complete
-    time.sleep(10)  # Wait for the command to finish (can adjust based on execution time)
-
-    # Step 4: Get the output of the command
-    try:
-        output = ssm_client.get_command_invocation(
+    while True:
+        time.sleep(2)
+        result = ssm_client.get_command_invocation(
             CommandId=command_id,
             InstanceId=instance_id
         )
-        # Print the command output
+        if result['Status'] in ('Success', 'Failed', 'Cancelled', 'TimedOut'):
+            break
+
+    # Step 4: Get the output of the command
+    try:
+        output = result['StandardOutputContent']
         print("Command output:")
-        print(output['StandardOutputContent'])
+        print(output)
         return {
             'statusCode': 200,
-            'body': output['StandardOutputContent']
+            'body': output
         }
     except Exception as e:
         print(f"Error fetching command output: {e}")

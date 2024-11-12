@@ -30,7 +30,7 @@ scrape_configs:
   - job_name: 'flask_stock_app'
     metrics_path: /metrics
     static_configs:
-      - targets: ['44.200.157.188:8000']
+      - targets: ['<STOCK-APP_IP_ADDRESS>:8000']
 EOF
 
 # Set Grafana datasource configuration file to pull from Prometheus and Loki
@@ -51,7 +51,7 @@ datasources:
     type: loki
     access: proxy
     orgId: 1
-    url: http://44.200.157.188:3100
+    url: http://<STOCK-APP_IP_ADDRESS>:3100
     isDefault: false
     version: 1
     editable: true

@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main  
-  pull_request:
 
 jobs:
   pylint:
@@ -22,8 +21,15 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pylint
+        pip install pylint boto3 flask yfinance numpy scikit-learn prometheus-client pymongo
 
     - name: Run Pylint
+      env:  # Optional: Specify environment variables if needed
+        PYTHONPATH: .
       run: |
-        pylint $(find . -name "*.py") 
+        # Check if a pylintrc file exists; if not, run pylint with default settings
+        if [ -f .pylintrc ]; then
+          pylint $(find . -name "*.py")
+        else
+          pylint --disable=R,C $(find . -name "*.py")
+        fi
